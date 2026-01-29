@@ -1,28 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+
+function DisplayTodos(){
+  const lists=[];
+return(
+  <div>
+    {lists}
+  </div>
+);
+}
 
 
 
-const tasks=Json.parse(localStorage.getItem('tasks')) || [];
+function InputDisplay(){
+  return(
+    <div>
+      <input type="text" placeholder="type the task..." /> <button>Add</button>
+    </div>
+  );
+}
 
 function ToDoApp(){
+  return (
+    <>
+    <InputDisplay/>
+    <DisplayTodos/>
+    </>
+  );
+}
+
+export default function App(){
+  return (
+    <>
+    <ToDoApp/>
+    </>
+  );
 
 }
 
 
 
 
-
-
-
-
-
-
-function App() {
-return <h1 className="text-9xl">Hello World</h1>
-}
-
-
-
-export default App
