@@ -15,7 +15,7 @@ import { forwardRef,useRef, useState } from "react";
 
 function ListItem({task,handleDelete,index,handleToggle}){
  
-  return <li  key={task.text}><span className={`${task.completed?'text-red-500 line-through':''}`} onClick={()=>handleToggle(index)}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
+  return <li  key={index} className="flex justify-around m-2"><span className={`${task.completed?'text-red-500 line-through':''}`}  onClick={()=>handleToggle(index)}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
 }
 
 
@@ -29,7 +29,7 @@ return (
   });
   console.log(lists);
 return(
-  <div className="text-2xl px-4 mt-2">
+  <div className="text-2xl px-4 mt-2 bg-amber-400">
     <ol className="list-disc px-2">
      {lists}
     </ol>
@@ -93,13 +93,12 @@ function handleToggle(index){
  task.completed=!task.completed;
  prevTasks[index]=task;
   setTasks(prevTasks);
-  console.log("Executed");
-  console.log('task.completed '+task.completed);
+  
 }
   return (
     <div className="w-100 min-h-24 border-2 px-1">
         <InputDisplay ref={InputRef} handleClick={handleClick} />
-        <DisplayTodos tasks={tasks} handleDelete={handleDelete} handleToggle={handleToggle}/>
+        <DisplayTodos className="bg-amber-400" tasks={tasks} handleDelete={handleDelete} handleToggle={handleToggle}/>
     </div>
   
   
