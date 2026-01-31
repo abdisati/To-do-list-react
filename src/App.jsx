@@ -13,17 +13,18 @@ import { forwardRef,useRef, useState } from "react";
 // const tasks=JSON.parse(localStorage.getItem('tasks')) || [];
 
 
-function ListItem({task,handleDelete,index}){
-  const listStyle={
-    textDecoration:`${task.completed?'line-through':'none'}`
-  }
-  return <li  key={task.text}><span style={listStyle}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
+function ListItem({task,handleDelete,index,handleToggle}){
+ 
+  return <li  key={task.text}><span className={`${task.completed?'text-red-500 line-through':''}`} onClick={()=>handleToggle(index)}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
 }
 
-function DisplayTodos({tasks, handleDelete}){
+
+
+
+function DisplayTodos({tasks, handleDelete, handleToggle}){
   const lists=tasks.map((task,index)=>{
 return (
-   <ListItem task={task} handleDelete={handleDelete} index={index}/>
+   <ListItem task={task} handleDelete={handleDelete} index={index} handleToggle={handleToggle}/>
 );
   });
   console.log(lists);
@@ -57,6 +58,8 @@ const InputDisplay=forwardRef((props,ref)=>{
 function ToDoApp(){
   const [tasks,setTasks]=useState([]);
   const InputRef=useRef(null);
+
+
 function handleClick(){
   //this adds a new task to the task array
   const value=InputRef.current.value.trim();
@@ -83,10 +86,20 @@ function handleDelete(index){
   prevTasks.splice(index,1);
   setTasks(prevTasks);
 }
+
+function handleToggle(index){
+  const prevTasks=tasks.slice(); //create a copy
+  const task=prevTasks[index];
+ task.completed=!task.completed;
+ prevTasks[index]=task;
+  setTasks(prevTasks);
+  console.log("Executed");
+  console.log('task.completed '+task.completed);
+}
   return (
     <div className="w-100 min-h-24 border-2 px-1">
         <InputDisplay ref={InputRef} handleClick={handleClick} />
-        <DisplayTodos tasks={tasks} handleDelete={handleDelete}/>
+        <DisplayTodos tasks={tasks} handleDelete={handleDelete} handleToggle={handleToggle}/>
     </div>
   
   
