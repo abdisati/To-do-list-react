@@ -71,8 +71,12 @@ function handleClick(){
   //now save the task to the task list array
   setTasks((prevTasks)=>[...prevTasks,task]);
 
+  //reset the input
+
+InputRef.current.value='';
   
 }
+
 
 function handleDelete(index){
   const prevTasks=tasks.slice();
