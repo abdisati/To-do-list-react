@@ -1,4 +1,4 @@
-import { forwardRef,useRef, useState } from "react";
+import { forwardRef,useRef, useState, useEffect } from "react";
 
 
 //manage the tasks i.e storing the tasks
@@ -15,7 +15,7 @@ import { forwardRef,useRef, useState } from "react";
 
 function ListItem({task,handleDelete,index,handleToggle}){
  
-  return <li  key={index} className="flex justify-around m-2"><span className={`${task.completed?'text-red-500 line-through':''}`}  onClick={()=>handleToggle(index)}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
+  return <li  className="flex justify-around m-2"><span className={`${task.completed?'text-red-500 line-through':''}`}  onClick={()=>handleToggle(index)}>{task.text}</span> <button className="btn text-xl" onClick={()=>handleDelete(index)}>Delete</button></li>;
 }
 
 
@@ -24,7 +24,7 @@ function ListItem({task,handleDelete,index,handleToggle}){
 function DisplayTodos({tasks, handleDelete, handleToggle}){
   const lists=tasks.map((task,index)=>{
 return (
-   <ListItem task={task} handleDelete={handleDelete} index={index} handleToggle={handleToggle}/>
+   <ListItem task={task} handleDelete={handleDelete} index={index} handleToggle={handleToggle}  key={index}/>
 );
   });
   console.log(lists);
@@ -56,8 +56,19 @@ const InputDisplay=forwardRef((props,ref)=>{
   });
 
 function ToDoApp(){
-  const [tasks,setTasks]=useState([]);
+  const [tasks,setTasks]=useState(()=>{
+    const saved=localStorage.getItem('tasks');
+    return saved?JSON.parse(saved):[];
+  });
   const InputRef=useRef(null);
+
+  useEffect(
+()=>{
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+    ,[tasks]
+  );
 
 
 function handleClick(){
@@ -88,11 +99,9 @@ function handleDelete(index){
 }
 
 function handleToggle(index){
-  const prevTasks=tasks.slice(); //create a copy
-  const task=prevTasks[index];
- task.completed=!task.completed;
- prevTasks[index]=task;
-  setTasks(prevTasks);
+setTasks(prevTasks=>prevTasks.map((t,i)=>i===index?{...t,completed:!t.completed}:t)
+
+);
   
 }
   return (
